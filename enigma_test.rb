@@ -60,19 +60,19 @@ class EncrypterTester < Minitest::Test
   def test_it_adds_the_rotations_to_the_keymapped_values
     encrypter = Encrypter.new("messages")
     keymapped_rotated_values = encrypter.rotate
-    assert_equal [[13, 16, 41, 52], [1, 18, 27, 52]], keymapped_rotated_values, "The keymapped rotated values should be a hash of the positions (A,B,C,D) as keys and the rotations plus the keymapped values as the values"
+    assert_equal [[13, 16, 41, 52], [1, 18, 27, 52]], keymapped_rotated_values, "The keymapped rotated values should be two arrays"
   end
 
   def test_it_passes_in_the_offsets
     encrypter = Encrypter.new("messages")
     keymapped_rotated_offset_values = encrypter.offset
-    assert_equal [[19, 18, 43, 57], [7, 20, 29, 57]], keymapped_rotated_offset_values, "The keymapped rotated offset values should be a hash of keys A,B,C,D and values are the keymapped rotated values plus the offset for the corresponding position"
+    assert_equal [[19, 18, 43, 57], [7, 20, 29, 57]], keymapped_rotated_offset_values, "The keymapped rotated values plus the offset for the corresponding position"
   end
 
   def test_it_returns_the_values_to_a_collection
     encrypter = Encrypter.new("messages")
     recollected_values = encrypter.recollect
-    assert_equal [19, 18, 43, 57, 7, 20, 29, 57], recollected_values, "The values from the hash of keymapped_rotated_offset_values should be returned as an array where 'A[0], B[0], C[0], D[0], A[1], A[2], A[3], A[4], ...'"
+    assert_equal [19, 18, 43, 57, 7, 20, 29, 57], recollected_values, "The keymapped_rotated_offset_values should be returned as an array where 'A[0], B[0], C[0], D[0], A[1], A[2], A[3], A[4], ...'"
   end
 
   def test_it_subtracts_39_from_the_encrypted_values_that_are_over_39

@@ -11,17 +11,13 @@ class Key
   attr_reader :key
               :rotations
 
-  def initialize(key="99999")
+  def initialize(key=randomize)
     @key = key
   end
 
   def randomize
-    if @key == "99999"
-    @key = rand(99999).to_s.rjust(5, '0')
-    else
-      @key
-    end
-
+    # rand(99999).to_s.rjust(5, '0')
+    sprintf("%05d", rand(99999))
   end
 
   def split_into_digits

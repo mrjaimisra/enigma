@@ -1,22 +1,36 @@
-require 'file'
+#!/usr/bin/env ruby
+
+require_relative 'enigma'
+require_relative 'decrypt'
+require_relative 'key_generator'
+require_relative 'keymap'
+require_relative 'date_offsets'
+
 
 class Encrypt
-
   def initialize
-    message = "message.txt"
-    message = File.open("sample.txt", "r")
-    contents = file.read
-    puts contents
 
-    File.open("message.txt").readlines.each do |line|
-      puts line
+    ARGV[0] = 'message.txt'
+    ARGV[1] = 'encrypted.txt'
 
-      output = "output.txt"
-      output = File.open("output.txt", "w")
-      output.puts
-      output.close
+    message = File.open('message.txt', 'r') do |file|
+        file.read
+      end
+
+    key = Key.new.key
+    print "Created '#{ARGV[1]}' with the key #{key} and date #{DateOffset.new.date}"
+
+    encrypted_message = Encrypter.new(message).encrypt
+    File.open('encrypted.txt', 'w') do |file|
+      # file.write("The encrypted value of the #{message} is #{Encrypter.new(ARGV[0]).encrypt}")
+      file.write(encrypted_message)
     end
+
+    decrypted_message = Decrypter.new(encrypted_message).decrypt
+    puts "decrypted_message = #{decrypted_message}"
+
+
+  end
   end
 
-end
-
+encrypter = Encrypt.new

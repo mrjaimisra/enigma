@@ -15,13 +15,13 @@ class Encrypter
     remap.join
   end
 
-  def format_message
-    formatted_message = @message.gsub(/[^[a-zA-Z][\d] ,.]/,'')
+  def format_message(message)
+    formatted_message = message.gsub(/[^[a-zA-Z][\d] ,.]/,'')
     formatted_message.downcase
   end
 
   def split_message
-    format_message.split("")
+    format_message(message).split("")
   end
 
   def find_values
@@ -32,13 +32,14 @@ class Encrypter
   end
 
   def collect_values
-    collected_values = []
-    find_values.each_slice(4) {|slice| collected_values << slice}
-    collected_values
+    # collected_values = []
+    # find_values.each_slice(4) {|slice| collected_values << slice}
+    # collected_values
+    find_values.each_slice(4)
   end
 
   def pass_in_keys
-    rotations = Key.new("01234").find_rotations
+    rotations = Key.new().find_rotations
     rotations.map {|rotation| rotation.to_i}
   end
 
@@ -53,7 +54,7 @@ class Encrypter
   end
 
   def pass_in_offsets
-    offsets = DateOffset.new("060215").find_offsets
+    offsets = DateOffset.new().find_offsets
     offsets.map {|offset| offset.to_i}
   end
 
@@ -83,22 +84,10 @@ class Encrypter
       encrypted_characters.invert[character]
     end
   end
-
 end
 
 enigma = Encrypter.new("messages")
-p "this is the formatted message: #{enigma.format_message.inspect}"
-p "this is the split message #{enigma.split_message.inspect}"
-p "these are the values in the character map #{enigma.find_values.inspect}"
-p "these are the collected values from the character map #{enigma.collect_values.inspect}"
-p "these are the keys #{enigma.pass_in_keys.inspect}"
-p "these are the rotated values #{enigma.rotate.inspect}"
-p "these are the offsets #{enigma.pass_in_offsets.inspect}"
-p "these are the offset values #{enigma.offset.inspect}"
-p "these are the recollected values after being rotated and offset #{enigma.recollect.inspect}"
-p "these are the new values to be keymapped #{enigma.find_remainder.inspect}"
-p "these are the new character mapped values #{enigma.remap.inspect}"
-p "this is the new encrypted message #{enigma.encrypt.inspect}"
+puts enigma.encrypt
 
 # Encrypter Steps (Pseudocode):
 
